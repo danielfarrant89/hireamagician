@@ -783,5 +783,5 @@ button { cursor: pointer; border: none; background: none; }
   .contact-form__row--3 { grid-template-columns: 1fr; }
   .review-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
   .footer__inner { flex-direction: column; gap: 0.5rem; text-align: center; }
-  .hero__title { font-size: clamp(2.5rem, 11vw, 4.5rem); }
+  .hero__title { font-size: clamp(2.2rem, 9vw, 4.5rem); }
 }
