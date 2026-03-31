@@ -762,11 +762,11 @@ button { cursor: pointer; border: none; background: none; }
 .footer__copy,
 .footer__links {
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.55);
   letter-spacing: 0.05em;
 }
 .footer__links a {
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.6);
   transition: color 0.2s;
 }
 .footer__links a:hover { color: var(--c-gold); }
