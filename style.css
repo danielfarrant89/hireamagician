@@ -272,6 +272,31 @@ button { cursor: pointer; border: none; background: none; }
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+/* Static logo grid – hidden on desktop, shown on mobile */
+.clients__grid {
+  display: none;
+}
+@media (max-width: 900px) {
+  .clients__track {
+    display: none;
+  }
+  .clients__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem 1.5rem;
+    justify-items: center;
+    align-items: center;
+    max-width: 500px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .clients__grid img {
+    height: 55px;
+    width: auto;
+    max-width: 100%;
+    opacity: 0.45;
+  }
+}
 
 /* ─── PARALLAX QUOTE ─────────────────────────────────────── */
 .parallax-quote {
