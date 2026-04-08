@@ -111,6 +111,7 @@ button { cursor: pointer; border: none; background: none; }
   background-image: url('images/13.jpg');
   background-size: cover;
   background-position: center 30%;
+  background-attachment: fixed;
 }
 .hero__overlay {
   position: absolute;
