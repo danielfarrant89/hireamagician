@@ -113,6 +113,11 @@ button { cursor: pointer; border: none; background: none; }
   background-position: center 30%;
   background-attachment: fixed;
 }
+@supports (-webkit-touch-callout: none) {
+  .hero {
+    background-attachment: scroll;
+  }
+}
 .hero__overlay {
   position: absolute;
   inset: 0;
