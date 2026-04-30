@@ -68,7 +68,7 @@ export async function onRequestPost(context) {
         Authorization: `Bearer ${context.env.RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: 'Hire a Magician <booking@hireamagician.com>',
+        from: 'Hire a Magician <enquiry@hireamagician.com>',
         to: 'dan@hireamagician.com',
         reply_to: email,
         subject: `New Booking: ${name} – ${event_date}`,
