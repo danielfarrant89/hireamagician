@@ -58,8 +58,11 @@ export async function onRequestPost(context) {
           ${row('How They Found Dan', referral)}
           ${row('Notes', notes ? notes.replace(/\n/g, '<br>') : '—')}
         </table>
+        <p style="margin-top:24px;font-size:13px;color:#777;">An .ics calendar file is attached — click it to add this event to your calendar.</p>
       </div>
     `;
+
+    const ics = buildIcs({ name, company, venue_address, event_date, perf_start, perf_end, contact_name, contact_phone, notes });
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -73,6 +76,12 @@ export async function onRequestPost(context) {
         reply_to: email,
         subject: `New Booking: ${name} – ${event_date}`,
         html,
+        attachments: [
+          {
+            filename: 'booking.ics',
+            content: btoa(ics),
+          },
+        ],
       }),
     });
 
@@ -87,6 +96,93 @@ export async function onRequestPost(context) {
     console.error('Booking form error:', err);
     return new Response(JSON.stringify({ error: 'Internal server error.' }), { status: 500, headers });
   }
+}
+
+function buildIcs({ name, company, venue_address, event_date, perf_start, perf_end, contact_name, contact_phone, notes }) {
+  const dtstart = parseDatetime(event_date, perf_start);
+  const dtend   = parseDatetime(event_date, perf_end);
+  const uid     = `booking-${Date.now()}@hireamagician.com`;
+  const now     = formatIcsDate(new Date());
+  const location = venue_address.replace(/\n/g, ', ');
+  const summary  = company ? `${name} (${company})` : name;
+  const description = [
+    `Client: ${name}`,
+    company ? `Company: ${company}` : '',
+    `Performance: ${perf_start} – ${perf_end}`,
+    `On-the-day contact: ${contact_name} – ${contact_phone}`,
+    notes ? `Notes: ${notes}` : '',
+  ].filter(Boolean).join('\\n');
+
+  // If we couldn't parse times, fall back to an all-day event
+  if (!dtstart || !dtend) {
+    const dateStr = parseIcsDate(event_date);
+    return [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//hireamagician.com//Booking//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${now}`,
+      `DTSTART;VALUE=DATE:${dateStr}`,
+      `DTEND;VALUE=DATE:${dateStr}`,
+      `SUMMARY:${escapeIcs(summary)}`,
+      `LOCATION:${escapeIcs(location)}`,
+      `DESCRIPTION:${description}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+  }
+
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//hireamagician.com//Booking//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${now}`,
+    `DTSTART;TZID=Europe/London:${dtstart}`,
+    `DTEND;TZID=Europe/London:${dtend}`,
+    `SUMMARY:${escapeIcs(summary)}`,
+    `LOCATION:${escapeIcs(location)}`,
+    `DESCRIPTION:${description}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n');
+}
+
+// Parse "DD/MM/YYYY" + "7:00pm" → "20250614T190000"
+function parseDatetime(dateStr, timeStr) {
+  const dateParts = dateStr.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+  if (!dateParts) return null;
+  const [, d, m, y] = dateParts;
+
+  const timeMatch = timeStr.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i);
+  if (!timeMatch) return null;
+  let [, h, min = '00', ampm = ''] = timeMatch;
+  h = parseInt(h, 10);
+  if (ampm.toLowerCase() === 'pm' && h !== 12) h += 12;
+  if (ampm.toLowerCase() === 'am' && h === 12) h = 0;
+
+  return `${y}${m.padStart(2,'0')}${d.padStart(2,'0')}T${String(h).padStart(2,'0')}${min.padStart(2,'0')}00`;
+}
+
+// Parse "DD/MM/YYYY" → "YYYYMMDD"
+function parseIcsDate(dateStr) {
+  const m = dateStr.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+  if (!m) return dateStr.replace(/\D/g, '').slice(0, 8);
+  return `${m[3]}${m[2].padStart(2,'0')}${m[1].padStart(2,'0')}`;
+}
+
+function formatIcsDate(d) {
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+function escapeIcs(str) {
+  return String(str).replace(/,/g, '\\,').replace(/;/g, '\\;');
 }
 
 function escapeHtml(str) {
