@@ -26,7 +26,7 @@
       --ff-body:      'Jost', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
+    html { scroll-behavior: smooth; font-size: 17px; }
     body {
       font-family: var(--ff-body);
       font-weight: 300;
@@ -64,7 +64,7 @@
       margin-bottom: 1rem;
     }
     .page-header__subtitle {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 300;
       line-height: 1.8;
       color: var(--c-text);
@@ -75,7 +75,7 @@
     .form-section + .form-section { margin-top: 2.5rem; }
     .form-section__title {
       font-family: var(--ff-body);
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -103,7 +103,7 @@
     }
     .form-field label {
       font-family: var(--ff-body);
-      font-size: 0.72rem;
+      font-size: 0.78rem;
       font-weight: 500;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -121,7 +121,7 @@
     .form-field select,
     .form-field textarea {
       font-family: var(--ff-body);
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 300;
       color: var(--c-ink);
       background: var(--c-mist);
@@ -150,6 +150,9 @@
     }
     .form-field input::placeholder,
     .form-field textarea::placeholder { color: #999; }
+    .form-field input[type="number"]::-webkit-inner-spin-button,
+    .form-field input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .form-field input[type="number"] { -moz-appearance: textfield; }
     .form-field textarea { resize: vertical; min-height: 110px; }
 
     /* ── Field error state ── */
@@ -200,8 +203,8 @@
     }
     .form-note {
       text-align: center;
-      font-size: 0.75rem;
-      color: #bbb;
+      font-size: 0.85rem;
+      color: var(--c-text-light);
       letter-spacing: 0.04em;
       line-height: 1.6;
     }
@@ -230,8 +233,8 @@
       margin-top: 4rem;
       padding-top: 2rem;
       border-top: 1px solid var(--c-border);
-      font-size: 0.75rem;
-      color: #bbb;
+      font-size: 0.85rem;
+      color: var(--c-text-light);
       text-align: center;
     }
 
@@ -289,21 +292,13 @@
         <div class="form-row form-row--2">
           <div class="form-field" id="field-event-date">
             <label for="event-date">Date of Event</label>
-            <input type="date" id="event-date" name="event_date">
-            <span class="form-field__error">Please select the event date.</span>
+            <input type="text" id="event-date" name="event_date" placeholder="DD/MM/YYYY">
+            <span class="form-field__error">Please enter the event date.</span>
           </div>
           <div class="form-field" id="field-guests">
             <label for="guests">Number of Guests</label>
-            <select id="guests" name="guests">
-              <option value="" disabled selected>Select</option>
-              <option value="1–30">1 – 30</option>
-              <option value="31–60">31 – 60</option>
-              <option value="61–100">61 – 100</option>
-              <option value="101–150">101 – 150</option>
-              <option value="151–200">151 – 200</option>
-              <option value="200+">200+</option>
-            </select>
-            <span class="form-field__error">Please select the number of guests.</span>
+            <input type="number" id="guests" name="guests" placeholder="e.g. 80" min="1">
+            <span class="form-field__error">Please enter the number of guests.</span>
           </div>
         </div>
 
@@ -327,12 +322,12 @@
         <div class="form-row form-row--2">
           <div class="form-field" id="field-perf-start">
             <label for="perf-start">Performance Start Time</label>
-            <input type="time" id="perf-start" name="perf_start">
+            <input type="text" id="perf-start" name="perf_start" placeholder="e.g. 7:00pm">
             <span class="form-field__error">Please enter a start time.</span>
           </div>
           <div class="form-field" id="field-perf-end">
             <label for="perf-end">Performance End Time</label>
-            <input type="time" id="perf-end" name="perf_end">
+            <input type="text" id="perf-end" name="perf_end" placeholder="e.g. 9:00pm">
             <span class="form-field__error">Please enter an end time.</span>
           </div>
         </div>
@@ -357,17 +352,8 @@
 
         <div class="form-field" id="field-referral">
           <label for="referral">How did you hear about Dan?</label>
-          <select id="referral" name="referral">
-            <option value="" disabled selected>Please select</option>
-            <option value="Google Search">Google Search</option>
-            <option value="Recommended by a friend or colleague">Recommended by a friend or colleague</option>
-            <option value="Saw Dan perform at an event">Saw Dan perform at an event</option>
-            <option value="Bark / Checkatrade / directory">Bark / Checkatrade / directory</option>
-            <option value="Social media">Social media</option>
-            <option value="Returning client">Returning client</option>
-            <option value="Other">Other</option>
-          </select>
-          <span class="form-field__error">Please select how you heard about Dan.</span>
+          <input type="text" id="referral" name="referral" placeholder="e.g. Google, friend recommendation, saw Dan at an event…">
+          <span class="form-field__error">Please let us know how you heard about Dan.</span>
         </div>
 
         <div class="form-field">
