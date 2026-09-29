@@ -130,7 +130,9 @@ if (form) {
     btn.disabled = true;
 
     try {
-      const data = Object.fromEntries(new FormData(form));
+      const data = Object.fromEntries(
+        [...new FormData(form)].map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])
+      );
       const res = await fetch(form.action, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -143,12 +145,16 @@ if (form) {
             <p style="font-size: 0.9rem; color: var(--c-text); letter-spacing: 0.04em;">Dan will be in touch within 24 hours.</p>
           </div>`;
       } else {
-        throw new Error('Form submission failed');
+        const { error } = await res.json().catch(() => ({}));
+        throw new Error(error || 'Form submission failed');
       }
-    } catch {
+    } catch (err) {
       btn.textContent = original;
       btn.disabled = false;
-      alert('Sorry, something went wrong. Please try again or email dan@hireamagician.com directly.');
+      const known = err && /required|Invalid email/.test(err.message);
+      alert(known
+        ? `${err.message} Please check and try again.`
+        : 'Sorry, something went wrong. Please try again or email dan@hireamagician.com directly.');
     }
   });
 }

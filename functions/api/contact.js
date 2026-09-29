@@ -5,7 +5,10 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const body = await context.request.json();
+    const raw = await context.request.json();
+    const body = Object.fromEntries(
+      Object.entries(raw).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])
+    );
 
     // Basic validation
     const { name, email, event_type, event_date, guests, message } = body;

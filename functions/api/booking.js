@@ -5,7 +5,10 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const body = await context.request.json();
+    const raw = await context.request.json();
+    const body = Object.fromEntries(
+      Object.entries(raw).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])
+    );
     const {
       name, email, company, billing_address,
       event_date, guests, venue_address, dress_code,
