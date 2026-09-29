@@ -138,9 +138,9 @@ if (form) {
       });
       if (res.ok) {
         form.innerHTML = `
-          <div style="text-align:center; padding: 3rem 0; color: rgba(255,255,255,0.8);">
+          <div style="text-align:center; padding: 3rem 0; color: var(--c-navy);">
             <p style="font-family: var(--ff-display); font-size: 1.8rem; font-style: italic; margin-bottom: 1rem;">Thank you!</p>
-            <p style="font-size: 0.9rem; color: rgba(255,255,255,0.5); letter-spacing: 0.04em;">I'll be in touch within 24 hours.</p>
+            <p style="font-size: 0.9rem; color: var(--c-text); letter-spacing: 0.04em;">Dan will be in touch within 24 hours.</p>
           </div>`;
       } else {
         throw new Error('Form submission failed');
@@ -148,7 +148,7 @@ if (form) {
     } catch {
       btn.textContent = original;
       btn.disabled = false;
-      alert('Sorry, something went wrong. Please try again or email me directly.');
+      alert('Sorry, something went wrong. Please try again or email dan@hireamagician.com directly.');
     }
   });
 }

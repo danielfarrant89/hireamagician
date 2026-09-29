@@ -694,14 +694,14 @@ button { cursor: pointer; border: none; background: none; }
 
 /* ─── CONTACT ─────────────────────────────────────────────── */
 .contact {
-  background: var(--c-navy);
+  background: var(--c-white);
   padding-block: clamp(5rem, 10vw, 9rem);
 }
-.contact .section-label { color: var(--c-gold); }
+.contact .section-label { color: var(--c-red); }
 .contact__intro {
   text-align: center;
   font-size: 1rem;
-  color: rgba(255,255,255,0.6);
+  color: var(--c-text);
   margin-bottom: 3rem;
   letter-spacing: 0.04em;
 }
@@ -726,17 +726,17 @@ button { cursor: pointer; border: none; background: none; }
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
+  color: var(--c-navy);
 }
 .contact-form__field input,
 .contact-form__field select,
 .contact-form__field textarea {
   font-family: var(--ff-body);
   font-size: 0.95rem;
-  font-weight: 300;
-  color: var(--c-white);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.14);
+  font-weight: 400;
+  color: var(--c-ink);
+  background-color: var(--c-mist);
+  border: 1px solid #d9d4ca;
   padding: 0.85rem 1rem;
   outline: none;
   transition: border-color 0.2s, background 0.2s;
@@ -745,22 +745,22 @@ button { cursor: pointer; border: none; background: none; }
   border-radius: 0;
 }
 .contact-form__field select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   padding-right: 2.5rem;
 }
-.contact-form__field select option { background: var(--c-navy); color: var(--c-white); }
+.contact-form__field select option { background: var(--c-white); color: var(--c-ink); }
 .contact-form__field input:focus,
 .contact-form__field select:focus,
 .contact-form__field textarea:focus {
   border-color: var(--c-gold);
-  background: rgba(255,255,255,0.08);
+  background-color: var(--c-white);
 }
 .contact-form__field input::placeholder,
-.contact-form__field textarea::placeholder { color: rgba(255,255,255,0.4); }
+.contact-form__field textarea::placeholder { color: #8a8a8a; }
 .contact-form__field input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
+  opacity: 0.6;
 }
 .contact-form__field textarea { resize: vertical; min-height: 130px; }
 .contact-form .btn--primary {
@@ -768,15 +768,15 @@ button { cursor: pointer; border: none; background: none; }
   border-color: var(--c-red);
 }
 .contact-form .btn--primary:hover {
-  background: var(--c-white);
-  color: var(--c-red);
-  border-color: var(--c-white);
+  background: var(--c-navy);
+  color: var(--c-white);
+  border-color: var(--c-navy);
 }
 .contact-form__note {
   text-align: center;
   margin-top: 1rem;
   font-size: 0.78rem;
-  color: rgba(255,255,255,0.3);
+  color: var(--c-text-light);
   letter-spacing: 0.04em;
 }
 
