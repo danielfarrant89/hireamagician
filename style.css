@@ -706,6 +706,18 @@ button { cursor: pointer; border: none; background: none; }
   letter-spacing: 0.04em;
 }
 .contact-form { width: 100%; }
+.contact__direct {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: var(--c-text);
+  letter-spacing: 0.04em;
+}
+.contact__direct a {
+  color: var(--c-red);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .contact-form__row {
   display: grid;
   grid-template-columns: 1fr 1fr;
