@@ -82,7 +82,7 @@ export async function onRequestPost(context) {
         attachments: [
           {
             filename: 'booking.ics',
-            content: btoa(ics),
+            content: base64Utf8(ics),
           },
         ],
       }),
@@ -114,7 +114,7 @@ function buildIcs({ name, company, venue_address, event_date, perf_start, perf_e
     `Performance: ${perf_start} – ${perf_end}`,
     `On-the-day contact: ${contact_name} – ${contact_phone}`,
     notes ? `Notes: ${notes}` : '',
-  ].filter(Boolean).join('\\n');
+  ].filter(Boolean).map(escapeIcs).join('\\n');
 
   // If we couldn't parse times, fall back to an all-day event
   if (!dtstart || !dtend) {
@@ -129,7 +129,7 @@ function buildIcs({ name, company, venue_address, event_date, perf_start, perf_e
       `UID:${uid}`,
       `DTSTAMP:${now}`,
       `DTSTART;VALUE=DATE:${dateStr}`,
-      `DTEND;VALUE=DATE:${dateStr}`,
+      `DTEND;VALUE=DATE:${nextDay(dateStr)}`,
       `SUMMARY:${escapeIcs(summary)}`,
       `LOCATION:${escapeIcs(location)}`,
       `DESCRIPTION:${description}`,
@@ -163,7 +163,7 @@ function parseDatetime(dateStr, timeStr) {
   if (!dateParts) return null;
   const [, d, m, y] = dateParts;
 
-  const timeMatch = timeStr.match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/i);
+  const timeMatch = timeStr.match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)?$/i);
   if (!timeMatch) return null;
   let [, h, min = '00', ampm = ''] = timeMatch;
   h = parseInt(h, 10);
@@ -185,7 +185,27 @@ function formatIcsDate(d) {
 }
 
 function escapeIcs(str) {
-  return String(str).replace(/,/g, '\\,').replace(/;/g, '\\;');
+  return String(str)
+    .replace(/\\/g, '\\\\')
+    .replace(/,/g, '\\,')
+    .replace(/;/g, '\\;')
+    .replace(/\r?\n/g, '\\n');
+}
+
+// btoa() throws on anything outside Latin-1 (en dashes, curly quotes, emoji), so encode as UTF-8 first
+function base64Utf8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return btoa(bin);
+}
+
+// All-day events end on the following day in iCalendar
+function nextDay(yyyymmdd) {
+  const m = yyyymmdd.match(/^(\d{4})(\d{2})(\d{2})$/);
+  if (!m) return yyyymmdd;
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3] + 1));
+  return d.toISOString().slice(0, 10).replace(/-/g, '');
 }
 
 function escapeHtml(str) {
