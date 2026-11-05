@@ -727,6 +727,9 @@ button { cursor: pointer; border: none; background: none; }
 .contact-form__row--3 {
   grid-template-columns: 1fr 1fr 1fr;
 }
+.contact-form__field--spaced {
+  margin-bottom: 1rem;
+}
 .contact-form__field {
   display: flex;
   flex-direction: column;

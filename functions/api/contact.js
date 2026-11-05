@@ -11,7 +11,7 @@ export async function onRequestPost(context) {
     );
 
     // Basic validation
-    const { name, email, event_type, event_date, timings, guests, message } = body;
+    const { name, email, event_type, event_date, location, timings, guests, message } = body;
     if (!name || !email) {
       return new Response(JSON.stringify({ error: 'Name and email are required.' }), {
         status: 400,
@@ -45,6 +45,7 @@ export async function onRequestPost(context) {
             <tr><td style="padding:6px 12px;font-weight:bold;">Email</td><td style="padding:6px 12px;">${escapeHtml(email)}</td></tr>
             <tr><td style="padding:6px 12px;font-weight:bold;">Event Type</td><td style="padding:6px 12px;">${escapeHtml(event_type || 'Not specified')}</td></tr>
             <tr><td style="padding:6px 12px;font-weight:bold;">Event Date</td><td style="padding:6px 12px;">${escapeHtml(event_date || 'Not specified')}</td></tr>
+            <tr><td style="padding:6px 12px;font-weight:bold;">Location</td><td style="padding:6px 12px;">${escapeHtml(location || 'Not specified')}</td></tr>
             <tr><td style="padding:6px 12px;font-weight:bold;">Timings</td><td style="padding:6px 12px;">${escapeHtml(timings || 'Not specified')}</td></tr>
             <tr><td style="padding:6px 12px;font-weight:bold;">Guests</td><td style="padding:6px 12px;">${escapeHtml(guests || 'Not specified')}</td></tr>
             <tr><td style="padding:6px 12px;font-weight:bold;">Message</td><td style="padding:6px 12px;">${escapeHtml(message || 'No message')}</td></tr>
